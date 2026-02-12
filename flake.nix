@@ -173,6 +173,13 @@
               set -e
               export PATH="${pkgs.bun}/bin:${pkgs.nodejs_22}/bin:${pkgs.purs}/bin:${pkgs.spago-unstable}/bin:${pkgs.purs-backend-es}/bin:${pkgs.esbuild}/bin:$PWD/node_modules/.bin:$PATH"
 
+              # Kill existing dev server if running
+              if ${pkgs.lsof}/bin/lsof -i :3000 -t >/dev/null 2>&1; then
+                echo ":: killing existing process on :3000"
+                ${pkgs.lsof}/bin/lsof -i :3000 -t | xargs kill 2>/dev/null || true
+                sleep 1
+              fi
+
               if [ ! -d "node_modules" ]; then
                 echo "Installing dependencies..."
                 ${pkgs.bun}/bin/bun install
@@ -186,7 +193,7 @@
 
               echo ""
               echo "Starting dev server at http://localhost:3000"
-              ${pkgs.bun}/bin/bun run dev
+              exec ${pkgs.bun}/bin/bun run dev
             ''
           );
         };
