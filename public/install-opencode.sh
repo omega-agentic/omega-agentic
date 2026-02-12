@@ -229,7 +229,12 @@ abort() {
   log "abort: rolling back"
   
   STATE_BASE="${XDG_STATE_HOME:-$HOME/.local/state}/straylight"
-  LATEST=$(ls -td "$STATE_BASE"/recovery-* 2>/dev/null | head -1)
+  
+  if [ ! -d "$STATE_BASE" ]; then
+    err "no recovery state"
+  fi
+  
+  LATEST=$(ls -td "$STATE_BASE"/recovery-* 2>/dev/null | head -1 || true)
   
   [ -z "$LATEST" ] && err "no recovery state"
   
