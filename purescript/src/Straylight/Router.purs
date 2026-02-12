@@ -28,7 +28,9 @@ derive instance eqRoute :: Eq Route
 
 parseRoute :: String -> Route
 parseRoute path = case path of
-  "/" -> Home
+  "/" -> OpenCode           -- omega: opencode IS home
+  "/opencode" -> OpenCode
+  "/opencode/" -> OpenCode
   "/plan" -> Plan
   "/plan/" -> Plan
   "/plan/lean" -> Lean
@@ -41,20 +43,18 @@ parseRoute path = case path of
   "/irc/" -> Irc
   "/discord" -> Discord
   "/discord/" -> Discord
-  "/opencode" -> OpenCode
-  "/opencode/" -> OpenCode
-  _ -> Home
+  _ -> OpenCode             -- fallback to opencode
 
 routeToPath :: Route -> String
 routeToPath = case _ of
-  Home -> "/"
+  Home -> "/"               -- legacy, maps to opencode
+  OpenCode -> "/"           -- omega: opencode IS home
   Plan -> "/plan"
   Lean -> "/plan/lean"
   Razorgirl -> "/razorgirl"
   Software -> "/software"
   Irc -> "/irc"
   Discord -> "/discord"
-  OpenCode -> "/opencode"
 
 -- ============================================================
 -- FFI

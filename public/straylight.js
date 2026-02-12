@@ -8317,7 +8317,15 @@
   }();
   var parseRoute = function(path) {
     if (path === "/") {
-      return Home.value;
+      return OpenCode.value;
+    }
+    ;
+    if (path === "/opencode") {
+      return OpenCode.value;
+    }
+    ;
+    if (path === "/opencode/") {
+      return OpenCode.value;
     }
     ;
     if (path === "/plan") {
@@ -8368,15 +8376,7 @@
       return Discord.value;
     }
     ;
-    if (path === "/opencode") {
-      return OpenCode.value;
-    }
-    ;
-    if (path === "/opencode/") {
-      return OpenCode.value;
-    }
-    ;
-    return Home.value;
+    return OpenCode.value;
   };
 
   // output/Web.UIEvent.MouseEvent/index.js
@@ -8480,6 +8480,10 @@
       return "/";
     }
     ;
+    if (v instanceof OpenCode) {
+      return "/";
+    }
+    ;
     if (v instanceof Plan) {
       return "/plan";
     }
@@ -8504,11 +8508,7 @@
       return "/discord";
     }
     ;
-    if (v instanceof OpenCode) {
-      return "/opencode";
-    }
-    ;
-    throw new Error("Failed pattern match at Main (line 138, column 15 - line 146, column 26): " + [v.constructor.name]);
+    throw new Error("Failed pattern match at Main (line 138, column 15 - line 146, column 24): " + [v.constructor.name]);
   };
   var routeThemeLock = function(v) {
     if (v instanceof Plan) {
@@ -8674,7 +8674,7 @@
   var appComponent = function(dictMonadAff) {
     return mkComponent({
       initialState: $$const({
-        route: Home.value
+        route: OpenCode.value
       }),
       render: render11(dictMonadAff),
       "eval": mkEval({

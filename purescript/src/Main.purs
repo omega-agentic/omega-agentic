@@ -107,7 +107,7 @@ _opencode = Proxy
 
 appComponent :: forall q i o m. MonadAff m => H.Component q i o m
 appComponent = H.mkComponent
-  { initialState: const { route: Home }
+  { initialState: const { route: OpenCode }  -- omega: opencode is home
   , render
   , eval: H.mkEval H.defaultEval
       { handleAction = handleAction
@@ -136,14 +136,14 @@ handleAction = case _ of
 
 routeToPath :: Route -> String
 routeToPath = case _ of
-  Home -> "/"
+  Home -> "/"           -- redirects to opencode
+  OpenCode -> "/"       -- omega: opencode IS home
   Plan -> "/plan"
   Lean -> "/plan/lean"
   Razorgirl -> "/razorgirl"
   Software -> "/software"
   Irc -> "/irc"
   Discord -> "/discord"
-  OpenCode -> "/opencode"
 
 render :: forall m. MonadAff m => AppState -> H.ComponentHTML AppAction AppSlots m
 render state =
