@@ -81,8 +81,7 @@ let
       
       # Set up environment for non-interactive install
       export OPENROUTER_API_KEY="test-key-fresh-install"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+
       
       # Run installer
       sh /installer.sh run
@@ -137,8 +136,7 @@ let
       echo "export MY_VAR=123" >> ~/.bashrc
       
       export OPENROUTER_API_KEY="test-key-existing"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+
       
       # Run installer
       sh /installer.sh run
@@ -171,8 +169,7 @@ let
       echo "# original bashrc" > ~/.bashrc
       
       export OPENROUTER_API_KEY="test-key-rollback"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+
       
       # Run installer (creates backup, installs new config)
       sh /installer.sh run
@@ -207,8 +204,7 @@ let
       rm -rf ~/.config/opencode ~/.config/straylight ~/.local/state/straylight
       
       export OPENROUTER_API_KEY="test-key-phases"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+
       
       # Phase 0: snapshot
       sh /installer.sh snapshot
@@ -249,8 +245,7 @@ let
       rm -rf ~/.config/opencode ~/.config/straylight ~/.local/state/straylight
       
       export OPENROUTER_API_KEY="test-key-idempotent"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+
       
       # Run installer twice
       sh /installer.sh run
@@ -289,8 +284,7 @@ let
       export XDG_CONFIG_HOME="/tmp/xdg-test/config"
       export XDG_STATE_HOME="/tmp/xdg-test/state"
       export OPENROUTER_API_KEY="test-key-xdg"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+
       
       sh /installer.sh run
       
@@ -320,8 +314,7 @@ let
       
       export SHELL="/bin/zsh"
       export OPENROUTER_API_KEY="test-key-zsh"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+
       
       sh /installer.sh run
       
@@ -344,25 +337,23 @@ let
       rm -rf ~/.config/opencode ~/.config/straylight ~/.local/state/straylight
       mkdir -p ~/.config/opencode
       
-      # First state
+      # First state (keys must be 8+ chars for validation)
       echo '{"version": 1}' > ~/.config/opencode/config.json
-      export OPENROUTER_API_KEY="key-v1"
-      export ANTHROPIC_API_KEY=""
-      export GOOGLE_API_KEY=""
+      export OPENROUTER_API_KEY="test-key-version-1"
       sh /installer.sh run
       
       sleep 1  # Ensure different timestamp
       
       # Second state
       echo '{"version": 2}' > ~/.config/opencode/config.json
-      export OPENROUTER_API_KEY="key-v2"
+      export OPENROUTER_API_KEY="test-key-version-2"
       sh /installer.sh run
       
       sleep 1
       
       # Third state (current)
       echo '{"version": 3}' > ~/.config/opencode/config.json
-      export OPENROUTER_API_KEY="key-v3"
+      export OPENROUTER_API_KEY="test-key-version-3"
       sh /installer.sh run
       
       # Abort should restore to most recent backup (version 3's backup of version 2)
