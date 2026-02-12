@@ -292,6 +292,23 @@ phase2_entry() {
   
   if [ -f "$SHELL_RC" ] && grep -qF "$MARKER" "$SHELL_RC" 2>/dev/null; then
     log "  shell: already configured"
+  elif [ -L "$SHELL_RC" ] || [ ! -w "$SHELL_RC" ] 2>/dev/null; then
+    # Symlink or read-only (e.g. home-manager, nix-darwin)
+    warn "shell: $SHELL_RC is read-only (home-manager?)"
+    log "  add to home.nix:"
+    printf '\n'
+    printf '    programs.bash.initExtra = '"'"''"'"''"'"'\n'
+    printf '      [ -f "%s" ] && . "%s"\n' "$ENV_FILE" "$ENV_FILE"
+    printf '    '"'"''"'"''"'"';\n'
+    printf '\n'
+    printf '    home.shellAliases = {\n'
+    printf '      oc = "opencode";\n'
+    printf '      oc-nitpick = "opencode --model nitpick";\n'
+    printf '      oc-opus = "opencode --model creative";\n'
+    printf '      oc-gemini = "opencode --model creative-gemini";\n'
+    printf '      oc-kimi = "opencode --model creative-kimi";\n'
+    printf '    };\n'
+    printf '\n'
   else
     # Append shell integration
     cat >> "$SHELL_RC" << SHELL_EOF
